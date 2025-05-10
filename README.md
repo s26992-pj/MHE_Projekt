@@ -113,18 +113,27 @@ python testAll.py --file data.txt --target 150 --suppress 1
 
 
 #Base
-python subsetSumComandLine.py base --file data.txt --target 100       
+python subsetSumComandLine.py base --file data.txt --target 100
+
 #Tabu
 python subsetSumComandLine.py tabu --file data.txt --target 20 --size 5
+
 #simulated
 python subsetSumComandLine.py simulated --file data.txt --target 100 --schedule exponential --alpha 0.95
+
 #genetic
 python subsetSumComandLine.py genetic --file data.txt --target 100 --pop 10 --cross one_point --mut add_remove --stop no_improve --elite 0
+
+subsetSumComandLine.py geneticNew --file data.txt --target 30 --pop 30 --cross uniform --mrate 0.05 --stop no_improve --elite 1 --generations 100
+
 #bruteForce
 python subsetSumComandLine.py bruteforce --file data.txt --target 100
+
 #hillClimb
 python subsetSumComandLine.py hillclimb --file data.txt --target 100 --mode random
-python subsetSumComandLine.py hillclimb --file data.txt --target 100 --mode best  
+
+python subsetSumComandLine.py hillclimb --file data.txt --target 100 --mode best
+
 ```
 
 # Zaimplementowane Algorytmy
