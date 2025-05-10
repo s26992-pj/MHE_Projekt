@@ -26,11 +26,12 @@ def run_Basic(file, target):
 
 def run_bruteforce(file, target):
     data = loadData(file)
-    bestSubset, sumSubset = brute_force(data, target)
+    convergence = []
+    bestSubset, sumSubset, diff, convergence = brute_force(data, target, track_convergence=convergence)
     print("Najlepszy pasujący podzbiór:", bestSubset)
     print("Suma:", sumSubset)
     print("Różnica od celu:", abs(sumSubset - target))
-
+    return bestSubset, sumSubset, diff, convergence
 
 def run_genetic(file, target, pop, cross, mut, stop, elite):
     numbers = loadData(file)
@@ -44,20 +45,19 @@ def run_genetic(file, target, pop, cross, mut, stop, elite):
         use_elite=elite
     )
 
-
 def run_hillclimb(file, target, mode):
     data = loadData(file)
     if mode == "best":
-        result, total, diff = hill_climb_best(data, target)
+        result, total, diff, convergence = hill_climb_best(data, target)
     elif mode == "random":
-        result, total, diff = hill_climb_random(data, target)
+        result, total, diff, convergence = hill_climb_random(data, target)
     else:
-        print("Nieznany tryb hill climbing. Wybierz 'best' lub 'random'.")
-        return
+        print("Dla hill climbing są tryby 'best' lub 'random'.")
+        return None, 0, 0, []
     print("Najlepszy znaleziony podzbiór:", result)
     print("Suma podzbioru:", total)
     print("Różnica od celu:", diff)
-
+    return result, total, diff, convergence
 
 def run_simulated(file, target, schedule, alpha):
     if not schedule or alpha is None:
