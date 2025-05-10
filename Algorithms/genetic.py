@@ -13,10 +13,7 @@ def initialize_population(numbers, size, target_sum):
         # Zapewniamy, że rozmiar próbki będzie w granicach dostępnych liczb
         count = random.randint(1, len(numbers))
         individual = random.sample(numbers, count)
-
-        # Unikamy próbek zbliżonych do celu
-        if abs(sum(individual) - target_sum) > 10:
-            population.append(individual)
+        population.append(individual)
 
     return population
 
@@ -29,8 +26,8 @@ def one_point_crossover(p1, p2):
     else:
         cut = random.randint(1, min(len(p1), len(p2)) - 1)
 
-    child1 = p1[:cut] + [x for x in p2 if x not in p1[:cut]]
-    child2 = p2[:cut] + [x for x in p1 if x not in p2[:cut]]
+    child1 = p1[:cut] + p2[:cut]
+    child2 = p2[:cut] + p1[:cut]
 
     return child1, child2
 
@@ -39,9 +36,13 @@ def one_point_crossover(p1, p2):
 def uniform_crossover(p1, p2):
     child1, child2 = [], []
     for a, b in zip(p1, p2):
-        if random.random() < 0.5 and a not in child1:
+        if random.random() < 0.5:
             child1.append(a)
-        if random.random() < 0.5 and b not in child2:
+        else:
+            child1.append(b)
+        if random.random() < 0.5:
+            child2.append(a)
+        else:
             child2.append(b)
     return child1, child2
 

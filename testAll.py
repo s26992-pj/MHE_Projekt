@@ -10,6 +10,8 @@ from Algorithms.hillClimb import hill_climb_best, hill_climb_random
 from Algorithms.simulatedAnnealing import simulated_annealing
 from Algorithms.tabu import tabu_search
 from Algorithms.genetic import genetic_algorithm
+from Algorithms.geneticNew import genetic_algorithm_new
+
 
 
 # Mierzenie ile bierze zasobów
@@ -25,6 +27,22 @@ def measure_performance(func, *args, **kwargs):
     memory_usage = max(0, final_memory - initial_memory)
 
     return result, elapsed_time, memory_usage
+
+def run_genetic_new(file, target, pop=50, cross="one_point", mrate=0.05, stop="generations", elite=1, generations=100):
+    numbers = loadData(file)
+    diffs = []
+    best, diffs = genetic_algorithm_new(
+        numbers=numbers,
+        target_sum=target,
+        pop_size=pop,
+        max_generations=generations,
+        mutation_rate=mrate,
+        crossover_method=cross,
+        stopping_condition=stop,
+        use_elite=bool(elite),
+        track_convergence=diffs
+    )
+    return best, sum(best), abs(sum(best) - target), diffs
 
 
 # Funkcja Wywołująca BruteForce
@@ -205,6 +223,8 @@ def run_comparison(file, target,suppress=True):
         "hillclimb_random": lambda: run_hillclimb(file, target, mode="random"),
         "genetic": lambda: run_genetic(file, target, pop=50, cross="one_point", mut="add_remove", stop="no_improve",
                                        elite=1),
+        "geneticNew": lambda: run_genetic_new(file, target, pop=50, cross="uniform", mrate=0.1, stop="generations",
+                                              elite=1, generations=100),
         "simulated": lambda: run_simulated(file, target, schedule="exponential", alpha=0.9),
         "tabu": lambda: run_tabu(file, target, tabu_size=10)
     }

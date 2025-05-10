@@ -9,7 +9,7 @@ from Algorithms.hillClimb import hill_climb_best, hill_climb_random
 from Algorithms.simulatedAnnealing import simulated_annealing
 from Algorithms.tabu import tabu_search
 from Algorithms.genetic import genetic_algorithm
-
+from Algorithms.geneticNew import genetic_algorithm_new
 
 #Implementacja Problemu
 def run_Basic(file, target):
@@ -45,6 +45,20 @@ def run_genetic(file, target, pop, cross, mut, stop, elite):
         use_elite=elite
     )
 
+def run_genetic_new(file, target, pop, cross, mrate, stop, elite, generations):
+    numbers = loadData(file)
+    genetic_algorithm_new(
+        numbers=numbers,
+        target_sum=target,
+        pop_size=pop,
+        max_generations=generations,
+        mutation_rate=mrate,
+        crossover_method=cross,
+        stopping_condition=stop,
+        use_elite=elite
+    )
+
+
 def run_hillclimb(file, target, mode):
     data = loadData(file)
     if mode == "best":
@@ -77,7 +91,7 @@ def run_tabu(file, target, tabu_size):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Algorytmy optymalizacji dla problemu podzbiorów.")
-    parser.add_argument("algorithm", type=str, choices=["base", "bruteforce", "genetic", "hillclimb", "simulated", "tabu"], help="Wybierz algorytm")
+    parser.add_argument("algorithm", type=str, choices=["base", "bruteforce", "genetic", "hillclimb", "simulated", "tabu","geneticNew"], help="Wybierz algorytm")
     parser.add_argument("--file", required=True, help="Plik wejściowy z liczbami")
     parser.add_argument("--target", type=int, required=True, help="Suma docelowa")
 
@@ -107,6 +121,11 @@ if __name__ == "__main__":
         run_bruteforce(args.file, args.target)
     elif args.algorithm == "genetic":
         run_genetic(args.file, args.target, args.pop, args.cross, args.mut, args.stop, bool(args.elite))
+    elif args.algorithm == "geneticNew":
+        run_genetic_new(
+            args.file, args.target, args.pop, args.cross,
+            args.mrate, args.stop, bool(args.elite), args.generations
+        )
     elif args.algorithm == "simulated":
         run_simulated(args.file, args.target, args.schedule, args.alpha)
     elif args.algorithm == "tabu":
