@@ -60,7 +60,6 @@ def mutate_add_remove(solution, all_numbers, mutation_rate=0.6):
 
 # Mutacja typu swap
 def mutate_swap(solution, _, mutation_rate=0.6):
-    solution = solution[:]
     if len(solution) > 1 and random.random() < mutation_rate:
         i, j = random.sample(range(len(solution)), 2)
         solution[i], solution[j] = solution[j], solution[i]
@@ -82,7 +81,7 @@ def genetic_algorithm(numbers, target_sum, pop_size=20, max_generations=100, mut
                       stopping_condition='no_improve', max_no_improve=20, use_elite=1,track_convergence=None):
 
     population = initialize_population(numbers, pop_size, target_sum)
-
+    bestPopulation = 0,
     best = max(population, key=lambda x: funkcjaCelu(x, target_sum))
     best_score = funkcjaCelu(best, target_sum)
     generations_no_improve = 0
@@ -142,7 +141,9 @@ def genetic_algorithm(numbers, target_sum, pop_size=20, max_generations=100, mut
 
     print("\n Najlepsze rozwiązanie:")
     print(f"Zbiór: {sorted(best)}")
-    print(f"poulaton: {bestPopulation}")
+    if(bestPopulation) : print(f"poulaton: {bestPopulation}")
+
+
     print(f"Suma: {sum(best)}, Różnica: {abs(sum(best) - target_sum)}")
 
     return best, track_convergence
